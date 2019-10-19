@@ -1,7 +1,8 @@
 import math
 import pickle
 import time
-import sys
+from copy import deepcopy
+
 
 class SearchProblem:
   def __init__(self, goal, model, auxheur=[]):
@@ -16,7 +17,7 @@ class SearchProblem:
     self.queue = []
   def search(self, init, limitexp=2000, limitdepth=10, tickets=[math.inf, math.inf, math.inf]):
     def cost(agent): # agent represents the index, agent 1 is index 0, 2 is index 1 and 3 is index 2
-    #FIXME:
+    #TODO: fix this fuction
         if (agent == 0):
             self.g_agent1 += 1
             return self.g_agent1
@@ -37,13 +38,11 @@ class SearchProblem:
         return node == self.goal[0]
 
     def successors(node):
-        succ = self.model[node]
+        succ = deepcopy(self.model[node])
         for i in range (len(succ)):
             cost = total_cost(succ[i][1], 0)
             succ[i].append(cost)
             self.queue.append(succ[i])
-            # succ[i].append(self.auxheur[succ[i][1]-1])
-            succ[i].append(self.auxheur[self.goal[0]-1])
         return succ
 
 
@@ -55,10 +54,8 @@ class SearchProblem:
 
     for i in range (len(init)):
         successors(init[i])
-        #self.queue = successors(init[i])
 
-    #for i in range(5):
-    while (is_goal(shortest_path[-1][1])==False):
+    while (is_goal(shortest_path[-1][1][0])==False):
         smallest_cost_node = []
         for i in range (len(self.queue)):
             if (i == 0):
@@ -70,10 +67,10 @@ class SearchProblem:
                     smallest_cost_node[2] = self.queue[i][2]
 
 
-        next_node = [smallest_cost_node[0], smallest_cost_node[1]]
+        next_node = [[smallest_cost_node[0]], [smallest_cost_node[1]]]
         shortest_path.append(next_node)
-        successors(next_node[1])
-        # print(self.queue)
-        # print(shortest_path)
+        successors(next_node[1][0])
+
+        print(shortest_path)
 
     return shortest_path
