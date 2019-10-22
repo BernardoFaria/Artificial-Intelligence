@@ -2,6 +2,7 @@ import pickle
 import copy
 import matplotlib.pyplot as plt
 import time
+# from v1 import SearchProblem
 from ruagomesfreiregamesol import SearchProblem
 
 with open("coords.pickle", "rb") as fp:   # Unpickling
@@ -81,7 +82,7 @@ print("%.1fms"%((tend-tinit)*1000))
 if validatepath(nn,I,U):
         print("path")
         print(nn)
-        plotpath(nn,coords)
+        #plotpath(nn,coords)
 else:
         print("invalid path")
 
@@ -96,8 +97,9 @@ print("%.1fms"%((tend-tinit)*1000))
 if validatepath(nn,I,U, tickets = [5,5,2]):
         print("path")
         print(nn)
-        plotpath(nn,coords)
+        #plotpath(nn,coords)
 else:
+        print(nn)
         print("invalid path")
 
 # print("\n(6 val) Exercise 3 - Three agents, No limits (test 1)")
@@ -114,7 +116,7 @@ else:
 #         plotpath(nn,coords)
 # else:
 #         print("invalid path")
-#
+
 # print("\n(6 val) Exercise 3 - Three agents, No limits (test 2)")
 # print("Init [30,40,109] Goal [61,60,71]")
 # SP = SearchProblem(goal = [61,60,71], model = U, auxheur=coords)
@@ -130,20 +132,20 @@ else:
 # else:
 #         print("invalid path")
 #
-# print("\n(4 val) Exercise 4 - Three agents, Limits")
-# print("Init [30,40,109] Goal [61,60,71]")
-# SP = SearchProblem(goal = [63,61,70], model = U, auxheur=coords)
-# tinit = time.process_time()
-# I = [30,40,109]
-# nn = SP.search(I,limitexp = 3000, limitdepth = 10, tickets = [5,20,2])
-# tend = time.process_time()
-# print("%.1fms"%((tend-tinit)*1000))
-# if validatepath(nn,I,U, tickets = [5,20,2]):
-#         print("path")
-#         print(nn)
-#         plotpath(nn,coords)
-# else:
-#         print("invalid path")
+print("\n(4 val) Exercise 4 - Three agents, Limits")
+print("Init [30,40,109] Goal [61,60,71]")
+SP = SearchProblem(goal = [63,61,70], model = U, auxheur=coords)
+tinit = time.process_time()
+I = [30,40,109]
+nn = SP.search(I,limitexp = 3000, limitdepth = 10, tickets = [5,20,2])
+tend = time.process_time()
+print("%.1fms"%((tend-tinit)*1000))
+if validatepath(nn,I,U, tickets = [5,20,2]):
+        print("path")
+        print(nn)
+        plotpath(nn,coords)
+else:
+        print("invalid path")
 #
 # print("\n(4 val) Exercise 5 - Three agents, Limits, Any-Order")
 # print("Init [30,40,109] Goal [61,60,71]")
