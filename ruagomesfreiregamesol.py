@@ -18,6 +18,8 @@ class SearchProblem:
     #For node n, gScore[n] is the cost of the cheapest path from start to n currently known.
     self.gScore = [dict(), dict(), dict()]
 
+    self.already_visited = list()
+
   def search(self, init, limitexp=2000, limitdepth=10, tickets=[math.inf, math.inf, math.inf]):
 
     def heuristic(node, destiny):  #send the tupple of coords of the nodes in auxheur
@@ -34,10 +36,6 @@ class SearchProblem:
             return [node1, node2, node3] == self.goal
 
     def lowest_node(node, goal, agent):
-        #0 is the node that is fScore.key() and 1 is the cost that is fScore.value()
-        # print("Min cost node:" + str(node))
-        # print("Min cost goal:" + str(goal))
-        # print("Min cost agent:" + str(agent))
 
         min_cost = total_cost(node[0], goal, agent)
 
@@ -64,6 +62,7 @@ class SearchProblem:
             next = go_next(current, last_node)
             total_path[0][0].extend(next)
             total_path = [[[], [current]]] + total_path
+        # print(total_path)
         return total_path
 
 
@@ -76,7 +75,9 @@ class SearchProblem:
 
     def check_tickets(current, neighbor, agent):
         check_tickets = [0, 0, 0]
+
         path = reconstruct_path(current, agent)
+
         for step in path:
 
             if step[0]:
@@ -89,11 +90,26 @@ class SearchProblem:
         if (len(init) == 1):
             return -1
         elif (current[0] == current[1]):
-            return 2
+            cost_0 = total_cost(current[0], self.goal[0], 0)
+            cost_1 = total_cost(current[1], self.goal[1], 1)
+            if (cost_0 > cost_1):
+                return 0
+            else: # if (cost_0 < cost_1)
+                return 1
         elif (current[1] == current[2]):
-            return 0
+            cost_1 = total_cost(current[1], self.goal[1], 1)
+            cost_2 = total_cost(current[2], self.goal[2], 2)
+            if (cost_1 > cost_2):
+                return 1
+            else: # if (cost_1 < cost_2)
+                return 2
         elif (current[0] == current[2]):
-            return 1
+            cost_0 = total_cost(current[0], self.goal[0], 0)
+            cost_2 = total_cost(current[2], self.goal[2], 2)
+            if (cost_0 > cost_2):
+                return 0
+            else: # if (cost_0 < cost_2)
+                return 2
         else:
             return -1
 
@@ -102,23 +118,30 @@ class SearchProblem:
         self.gScore[i] = {init[i]:0}
 
     last_node = init
-    while limitexp > 0:
+    while limitexp > 0 and limitdepth > 0:
 
         current = [math.inf, math.inf, math.inf]
         c = 3
-        while c != -1:
+        flag = 0
+        while (flag != 1):
             for i in range(len(init)):
-                # print(self.openSet)
+
                 current[i] = lowest_node(self.openSet[i], self.goal[i], i)
 
-                self.openSet[i].remove(current[i])
-                # print(current)
             c = verifica_posicoes(current)
+            if (c != -1 ):
+                self.openSet[c].remove(current[c])
 
-            # if (c == 2):
-            #     current[0] = lowest_node(self.openSet[i], self.goal[i], i)
-            #     c = verifica_posicoes(current)
+            elif (c == -1 and (current not in self.already_visited)):
+                for i in range(len(init)):
+                    self.openSet[i].remove(current[i])
 
+                self.already_visited.append(current)
+                # print("WHAZAAAAAA")
+                flag = 1
+            elif (c == -1 and (current in self.already_visited)):
+                for i in range(len(init)):
+                    self.openSet[i].remove(current[i])
 
         if (is_goal(current[0], current[1], current[2], i)):
             print("Entrou no is_goal:" + str([current[0], current[1], current[2]]))
@@ -126,17 +149,9 @@ class SearchProblem:
                 result = reconstruct_path(current[i], i)
             return result
 
-        # for i in range(len(init)):
-        # print(current)
-
-        # if current[i] in self.openSet[i]:
-        #     self.openSet[i].remove(current[i])
-
-        # if (current[i] )
-
         for i in range(len(init)):
             for neighbor in self.model[current[i]]:
-                # print(self.model[current[i]])
+
                 neighbor = neighbor[1]
 
                 next_g = self.gScore[i][current[i]] + 1
@@ -153,4 +168,5 @@ class SearchProblem:
                     self.openSet[i].append(neighbor)
                     limitexp -= 1
         limitdepth -= 1
+
     return []
