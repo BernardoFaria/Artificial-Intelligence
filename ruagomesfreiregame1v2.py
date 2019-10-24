@@ -133,9 +133,9 @@ if validatepath(nn,I,U):
         plotpath(nn,coords)
 else:
         print("invalid path")
-#
+
 print("\n(4 val) Exercise 4 - Three agents, Limits")
-print("Init [30,40,109] Goal [61,60,71]")
+print("Init [30,40,109] Goal [63,61,70]")
 SP = SearchProblem(goal = [63,61,70], model = U, auxheur=coords)
 tinit = time.process_time()
 I = [30,40,109]
