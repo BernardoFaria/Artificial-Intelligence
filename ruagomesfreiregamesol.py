@@ -25,12 +25,22 @@ class SearchProblem:
     def total_cost(node, goal, agent):
         return self.gScore[agent].get(node, math.inf) + heuristic(self.auxheur[node-1] , self.auxheur[goal-1])
 
+
+
+
+
+
     def is_goal(node1, node2, node3, agent):
         result = list()
         if (len(init) == 1):
             return [node1] == self.goal
         elif (len(init)==3):
             return [node1, node2, node3] == self.goal
+
+
+
+
+
 
     def lowest_node(node, goal, agent):
 
@@ -47,6 +57,14 @@ class SearchProblem:
                 small = n
 
         return small
+
+
+
+
+
+
+
+
 
 
     def reconstruct_path(current, agent = None, flag = 0):
@@ -91,6 +109,13 @@ class SearchProblem:
             return total_path
 
 
+
+
+
+
+
+
+
     def go_next(f, to):
 
         for n in self.model[f]:
@@ -99,19 +124,35 @@ class SearchProblem:
         return [-1]
 
 
+
+
+
+
+
+
+
     def check_tickets(current, neighbor, agent):
         check_tickets = [0, 0, 0]
 
+
         path = reconstruct_path(current, agent, 1)
+
+        print(path)
 
         for step in path:
 
             if step[0]:
                 check_tickets[step[0][0]] += 1
         next = go_next(current, neighbor)
-        
+
         check_tickets[next[0]] += 1
         return all([check_tickets[i] <= tickets[i] for i in range(3)])
+
+
+
+
+
+
 
     def verifica_posicoes(current):
         if (len(init) == 1):
@@ -139,6 +180,19 @@ class SearchProblem:
                 return 2
         else:
             return -1
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     for i in range (len(init)):
         self.openSet[i] = list([init[i]])
@@ -192,7 +246,7 @@ class SearchProblem:
                 if self.gScore[i].get(neighbor, math.inf) > next_g:
 
                     if not check_tickets(current[i], neighbor, i):
-                        continue
+                        continue    
 
                     self.cameFrom[i][neighbor] = current[i]
                     self.gScore[i][neighbor] = next_g
