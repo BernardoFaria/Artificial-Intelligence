@@ -2,8 +2,6 @@ import math
 import pickle
 import time
 
-
-
 class SearchProblem:
   def __init__(self, goal, model, auxheur=[]):
     self.goal = goal #obejtivo
@@ -37,6 +35,9 @@ class SearchProblem:
 
     def lowest_node(node, goal, agent):
         #0 is the node that is fScore.key() and 1 is the cost that is fScore.value()
+        # print("Min cost node:" + str(node))
+        # print("Min cost goal:" + str(goal))
+        # print("Min cost agent:" + str(agent))
 
         min_cost = total_cost(node[0], goal, agent)
 
@@ -55,6 +56,7 @@ class SearchProblem:
 
     def reconstruct_path(current, agent):
         total_path = [[[], [current]]]
+
 
         while current in self.cameFrom[agent]:
             last_node = current
@@ -83,32 +85,58 @@ class SearchProblem:
         check_tickets[next[0]] += 1
         return all([check_tickets[i] <= tickets[i] for i in range(3)])
 
+    def verifica_posicoes(current):
+        if (len(init) == 1):
+            return -1
+        elif (current[0] == current[1]):
+            return 2
+        elif (current[1] == current[2]):
+            return 0
+        elif (current[0] == current[2]):
+            return 1
+        else:
+            return -1
 
     for i in range (len(init)):
         self.openSet[i] = list([init[i]])
         self.gScore[i] = {init[i]:0}
 
-    while self.openSet:
+    last_node = init
+    while limitexp > 0:
 
         current = [math.inf, math.inf, math.inf]
-        for i in range(len(init)):
+        c = 3
+        while c != -1:
+            for i in range(len(init)):
+                # print(self.openSet)
+                current[i] = lowest_node(self.openSet[i], self.goal[i], i)
 
-            current[i] = lowest_node(self.openSet[i], self.goal[i], i)
-            print(current)
-            if (is_goal(current[0], current[1], current[2], i)):
-                for i in range(len(init)):
-                    result = reconstruct_path(current[i], i)
-                return result
-
-            # for i in range(len(init)):
-                # print(self.openSet[i])
-            # print(current[i])
-            if current[i] in self.openSet[i]:
                 self.openSet[i].remove(current[i])
+                # print(current)
+            c = verifica_posicoes(current)
 
-            # if (current[i] )
+            # if (c == 2):
+            #     current[0] = lowest_node(self.openSet[i], self.goal[i], i)
+            #     c = verifica_posicoes(current)
+
+
+        if (is_goal(current[0], current[1], current[2], i)):
+            print("Entrou no is_goal:" + str([current[0], current[1], current[2]]))
+            for i in range(len(init)):
+                result = reconstruct_path(current[i], i)
+            return result
+
+        # for i in range(len(init)):
+        # print(current)
+
+        # if current[i] in self.openSet[i]:
+        #     self.openSet[i].remove(current[i])
+
+        # if (current[i] )
+
+        for i in range(len(init)):
             for neighbor in self.model[current[i]]:
-
+                # print(self.model[current[i]])
                 neighbor = neighbor[1]
 
                 next_g = self.gScore[i][current[i]] + 1
@@ -121,5 +149,8 @@ class SearchProblem:
                     self.gScore[i][neighbor] = next_g
 
                 if neighbor not in self.openSet[i]:
+
                     self.openSet[i].append(neighbor)
-    return "RiP"
+                    limitexp -= 1
+        limitdepth -= 1
+    return []

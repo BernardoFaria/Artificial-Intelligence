@@ -112,10 +112,10 @@ class SearchProblem:
             neighbor = neighbor[1]
             print(self.gScore)
             next_g = self.gScore[current] + 1
+            print(self.gScore[current])
 
             if self.gScore.get(neighbor, math.inf) > next_g:
                 if not check_tickets(current, neighbor):
-                    print("----")
                     continue
 
                 self.cameFrom[neighbor] = current
