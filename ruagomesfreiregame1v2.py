@@ -83,7 +83,7 @@ print("%.1fms"%((tend-tinit)*1000))
 if validatepath(nn,I,U):
         print("path")
         print(nn)
-        #plotpath(nn,coords)
+        plotpath(nn,coords)
 else:
         print("invalid path")
 
@@ -98,7 +98,7 @@ print("%.1fms"%((tend-tinit)*1000))
 if validatepath(nn,I,U, tickets = [5,5,2]):
         print("path")
         print(nn)
-        #plotpath(nn,coords)
+        plotpath(nn,coords)
 else:
         print(nn)
         print("invalid path")
