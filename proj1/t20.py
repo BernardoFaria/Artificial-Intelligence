@@ -26,7 +26,7 @@ class SearchProblem:
 
     self.openSet = list()
 
-  def search(self, init, limitexp=2000, limitdepth=10, tickets=[math.inf, math.inf, math.inf]):
+  def search(self, init, limitexp=2000, limitdepth=10, tickets=[math.inf, math.inf, math.inf], anyorder = False):
 
     H=[0]*114
 
@@ -404,7 +404,7 @@ class SearchProblem:
         while current.parent != None:
             result.append([current.transport, current.node])
             current = current.parent
-        result.append([current.transport, current.node])
+        result.append([[], current.node])
 
         return result[::-1]
 

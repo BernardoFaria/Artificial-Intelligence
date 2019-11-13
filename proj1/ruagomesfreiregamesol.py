@@ -404,7 +404,7 @@ class SearchProblem:
         while current.parent != None:
             result.append([current.transport, current.node])
             current = current.parent
-        result.append([current.transport, current.node])
+        result.append([[], current.node])
 
         return result[::-1]
 
