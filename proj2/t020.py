@@ -41,7 +41,7 @@ class LearningAgent:
         else:
             for i in range(len(aa)):
                 if self.matrix_q[st][i] == None:
-                    continue
+                    break
                 if self.matrix_q[st][i] > matrix:
                     matrix = self.matrix_q[st][i]
                     next_action = i
