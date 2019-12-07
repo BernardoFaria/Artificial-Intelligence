@@ -13,14 +13,14 @@ class LearningAgent:
     # nA maximum number of action per state
     def __init__(self, nS, nA):
 
-        self.epsilon = 0.8
-        self.alpha = 0.75
-        self.gamma = 0.9
 
         self.nS = nS
         self.nA = nA
 
-        # self.matrix_q = self.nS * [[None] * self.nA]
+        self.epsilon = 0.25
+        self.alpha = 0.1
+        self.gamma = 0.65
+
         self.matrix_q = [[None for i in range(self.nA)] for i in range(self.nS)]
 
     # Select one action, used when learning
@@ -37,6 +37,7 @@ class LearningAgent:
 
         if random.random() < self.epsilon:
             action = random.choice(aa)
+            self.epsilon *= 0.999
             return aa.index(action)
         else:
             for i in range(len(aa)):
@@ -45,6 +46,7 @@ class LearningAgent:
                 if self.matrix_q[st][i] > matrix:
                     matrix = self.matrix_q[st][i]
                     next_action = i
+
             return next_action
 
     # Select one action, used when evaluating
@@ -93,7 +95,7 @@ class LearningAgent:
 
     def learn(self, ost, nst, a, r):
 
-        # next_a = self.get_max_a(nst)
+
 
         if self.matrix_q[ost][a] == None:
             self.matrix_q[ost][a] = 0

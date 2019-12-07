@@ -19,17 +19,21 @@ def runagent(A, T, R, I=1, learningphase=True, nlearn=1000, ntest=100):
                 else:
                         a = A.selectactiontoexecute(st, aa)
                 try:
+                        # if random.random() >= 0.2:
+                                # nst = T[st][0][a]
+                        # else:
+                                # nst = st
                         nst = T[st][0][a]
                 except:
                         print(st, a)
                 r = R[st]
                 J += r
-                #print(st,nst,a,r)
+                ## print(st,nst,a,r)
 
                 if learningphase:
                         A.learn(st, nst, a, r)
                 else:
-                        #print(st,nst,a,r)
+                        ## print(st,nst,a,r)
                         pass
 
                 st = nst
